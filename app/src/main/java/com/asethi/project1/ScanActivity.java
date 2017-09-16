@@ -8,22 +8,14 @@ import android.graphics.Color;
 import android.net.wifi.ScanResult;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.View;
-import android.support.design.widget.NavigationView;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -31,18 +23,18 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+/**
+ * Created by sony on 9/16/2017.
+ */
 
-    String serverUri = "xxxx";
-    Boolean cleanVar = false;
-    Boolean connected = false;
+public class ScanActivity extends AppCompatActivity {
+
+    String serverUri = "Status: ";
     WifiManager mainWifi;
-    //WifiReceiver receiverWifi;
     BroadcastReceiver receiverWifi;
     List<ScanResult> wifiList;
     StringBuilder sb = new StringBuilder();
-    EditText serverText;
+    TextView serverText;
 
     private HistoryAdapter mAdapter;
     RecyclerView mRecyclerView;
@@ -50,21 +42,23 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.start);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        serverText = (EditText) findViewById(R.id.serverUI);
+        setContentView(R.layout.scan);
+        //Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        //setSupportActionBar(toolbar);
+        serverText = (TextView) findViewById(R.id.serverUI);
 
-/*        mRecyclerView = (RecyclerView) findViewById(R.id.history_recycler_view);
+        // For ListView Adapter
+        mRecyclerView = (RecyclerView) findViewById(R.id.history_recycler_view);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
         mAdapter = new HistoryAdapter(new ArrayList<String>());
         mAdapter.setHasStableIds(true);
         mRecyclerView.setAdapter(mAdapter);
+        // For ListView Adapter
 
-        mainWifi = (WifiManager)getApplicationContext().getSystemService(Context.WIFI_SERVICE);
+        mainWifi = (WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE);
 
-        if (mainWifi.isWifiEnabled() == false){
+        if (mainWifi.isWifiEnabled() == false) {
             Toast.makeText(getApplicationContext(), "Enabling WiFi", Toast.LENGTH_LONG).show();
             mainWifi.setWifiEnabled(true);
         }
@@ -72,16 +66,7 @@ public class MainActivity extends AppCompatActivity
         registerReceiver(receiverWifi, new IntentFilter(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION));
         mainWifi.startScan();
         serverText.setText("Starting Scan...");
-*/
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
-        toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
-/*
         Button conn = (Button) findViewById(R.id.connectB);
         conn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -90,9 +75,6 @@ public class MainActivity extends AppCompatActivity
                         getSystemService(Context.INPUT_METHOD_SERVICE);
                 inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),
                         InputMethodManager.HIDE_NOT_ALWAYS);
-                EditText inputTxt = (EditText) findViewById(R.id.serverUI);
-                String typedText = inputTxt.getText().toString();
-                serverUri = typedText;
             }
         });
 
@@ -108,41 +90,43 @@ public class MainActivity extends AppCompatActivity
                 }
             }
         });
-        */
     }
+
     class WifiReceiver extends BroadcastReceiver {
         // This method call when number of wifi connections changed
         public void onReceive(Context c, Intent intent) {
-            serverText = (EditText) findViewById(R.id.serverUI);
+            InputMethodManager inputManager = (InputMethodManager)
+                    getSystemService(Context.INPUT_METHOD_SERVICE);
+            inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),
+                    InputMethodManager.HIDE_NOT_ALWAYS);
+            serverText = (TextView) findViewById(R.id.serverUI);
             if (intent.getAction().equals(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION)) {
                 Toast.makeText(getApplicationContext(), "WiFi Scan Results", Toast.LENGTH_LONG).show();
                 System.out.println("Scan results received");
             }
             sb = new StringBuilder();
             wifiList = mainWifi.getScanResults();
-            sb.append("Wifi conn: "+wifiList.size()+"\n\n");
-            for(int i = 0; i < wifiList.size(); i++){
-                sb.append(new Integer(i+1).toString() + ". ");
+            sb.append("Wifi conn: " + wifiList.size() + "\n\n");
+            for (int i = 0; i < wifiList.size(); i++) {
+                sb.append(new Integer(i + 1).toString() + ". ");
                 sb.append((wifiList.get(i)).toString());
                 sb.append("\n\n");
                 addToHistory("Already subscribed to: " + wifiList.get(i).toString(), Color.BLUE);
             }
-            InputMethodManager inputManager = (InputMethodManager)
-                    getSystemService(Context.INPUT_METHOD_SERVICE);
-            inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),
-                    InputMethodManager.HIDE_NOT_ALWAYS);
             serverText.setText("Scan Completed");
         }
     }
 
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+/*        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
             super.onBackPressed();
         }
+        */
+        super.onBackPressed();
     }
 
     @Override
@@ -153,14 +137,16 @@ public class MainActivity extends AppCompatActivity
     }
 
     protected void onPause() {
+        unregisterReceiver(receiverWifi);
         super.onPause();
     }
 
     protected void onResume() {
+        registerReceiver(receiverWifi, new IntentFilter(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION));
         super.onResume();
     }
 
-    private void addToHistory(String mainText, int color){
+    private void addToHistory(String mainText, int color) {
         System.out.println("Aseem: " + mainText);
         mAdapter.add(mainText, color);
         mRecyclerView.smoothScrollToPosition(mAdapter.getItemCount());
@@ -180,31 +166,5 @@ public class MainActivity extends AppCompatActivity
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    @SuppressWarnings("StatementWithEmptyBody")
-    @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
-        int id = item.getItemId();
-
-        if (id == R.id.nav_camera) {
-            Intent intent = new Intent(this, ScanActivity.class);
-            startActivity(intent);
-        } else if (id == R.id.nav_gallery) {
-
-        } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_manage) {
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
-        }
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
-        return true;
     }
 }

@@ -20,26 +20,16 @@
             android:layout_weight="1"
             android:background="@drawable/my_border"
             android:inputType="textPersonName"
-            android:text="Server:" />
+            android:text="Status:" />
 
-        <EditText
-            android:id="@+id/server"
+        <TextView
+            android:id="@+id/serverUI"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="4"
             android:inputType="textPersonName"
-            android:text="xxxx"
+            android:text="Status Line..."
             android:textSize="12sp" />
-
-        <TextView
-            android:id="@+id/conn"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="10dp"
-            android:layout_weight="1"
-            android:background="@drawable/disconnected"
-            android:inputType="textPersonName"
-            android:text="Conn" />
     </LinearLayout>
 
     <LinearLayout
@@ -64,13 +54,7 @@
             android:layout_height="wrap_content"
             android:textSize="12sp"
             android:text="Discon" />
-        <CheckBox
-            android:id="@+id/cleanBUI"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:text="Clear"
-            android:textSize="12sp"/>
+
     </LinearLayout>
     <View
         android:layout_width="match_parent"
