@@ -42,7 +42,6 @@ public class MainActivity extends AppCompatActivity
     BroadcastReceiver receiverWifi;
     List<ScanResult> wifiList;
     StringBuilder sb = new StringBuilder();
-    EditText serverText;
 
     private HistoryAdapter mAdapter;
     RecyclerView mRecyclerView;
@@ -53,26 +52,7 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.start);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        serverText = (EditText) findViewById(R.id.serverUI);
 
-/*        mRecyclerView = (RecyclerView) findViewById(R.id.history_recycler_view);
-        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this);
-        mRecyclerView.setLayoutManager(mLayoutManager);
-        mAdapter = new HistoryAdapter(new ArrayList<String>());
-        mAdapter.setHasStableIds(true);
-        mRecyclerView.setAdapter(mAdapter);
-
-        mainWifi = (WifiManager)getApplicationContext().getSystemService(Context.WIFI_SERVICE);
-
-        if (mainWifi.isWifiEnabled() == false){
-            Toast.makeText(getApplicationContext(), "Enabling WiFi", Toast.LENGTH_LONG).show();
-            mainWifi.setWifiEnabled(true);
-        }
-        receiverWifi = new WifiReceiver();
-        registerReceiver(receiverWifi, new IntentFilter(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION));
-        mainWifi.startScan();
-        serverText.setText("Starting Scan...");
-*/
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -81,58 +61,6 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-/*
-        Button conn = (Button) findViewById(R.id.connectB);
-        conn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                InputMethodManager inputManager = (InputMethodManager)
-                        getSystemService(Context.INPUT_METHOD_SERVICE);
-                inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),
-                        InputMethodManager.HIDE_NOT_ALWAYS);
-                EditText inputTxt = (EditText) findViewById(R.id.serverUI);
-                String typedText = inputTxt.getText().toString();
-                serverUri = typedText;
-            }
-        });
-
-        Button disconn = (Button) findViewById(R.id.disconnectB);
-        disconn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                InputMethodManager inputManager = (InputMethodManager)
-                        getSystemService(Context.INPUT_METHOD_SERVICE);
-                inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),
-                        InputMethodManager.HIDE_NOT_ALWAYS);
-                if (serverUri != null) {
-                }
-            }
-        });
-        */
-    }
-    class WifiReceiver extends BroadcastReceiver {
-        // This method call when number of wifi connections changed
-        public void onReceive(Context c, Intent intent) {
-            serverText = (EditText) findViewById(R.id.serverUI);
-            if (intent.getAction().equals(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION)) {
-                Toast.makeText(getApplicationContext(), "WiFi Scan Results", Toast.LENGTH_LONG).show();
-                System.out.println("Scan results received");
-            }
-            sb = new StringBuilder();
-            wifiList = mainWifi.getScanResults();
-            sb.append("Wifi conn: "+wifiList.size()+"\n\n");
-            for(int i = 0; i < wifiList.size(); i++){
-                sb.append(new Integer(i+1).toString() + ". ");
-                sb.append((wifiList.get(i)).toString());
-                sb.append("\n\n");
-                addToHistory("Already subscribed to: " + wifiList.get(i).toString(), Color.BLUE);
-            }
-            InputMethodManager inputManager = (InputMethodManager)
-                    getSystemService(Context.INPUT_METHOD_SERVICE);
-            inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),
-                    InputMethodManager.HIDE_NOT_ALWAYS);
-            serverText.setText("Scan Completed");
-        }
     }
 
     @Override
@@ -159,13 +87,6 @@ public class MainActivity extends AppCompatActivity
     protected void onResume() {
         super.onResume();
     }
-
-    private void addToHistory(String mainText, int color){
-        System.out.println("Aseem: " + mainText);
-        mAdapter.add(mainText, color);
-        mRecyclerView.smoothScrollToPosition(mAdapter.getItemCount());
-    }
-
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

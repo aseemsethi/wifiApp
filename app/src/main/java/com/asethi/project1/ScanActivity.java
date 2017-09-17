@@ -16,12 +16,15 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
+import com.asethi.project1.WiFiProperties;
 
 /**
  * Created by sony on 9/16/2017.
@@ -35,7 +38,7 @@ public class ScanActivity extends AppCompatActivity {
     List<ScanResult> wifiList;
     StringBuilder sb = new StringBuilder();
     TextView serverText;
-
+    CheckBox cb;
     private HistoryAdapter mAdapter;
     RecyclerView mRecyclerView;
 
@@ -51,7 +54,7 @@ public class ScanActivity extends AppCompatActivity {
         mRecyclerView = (RecyclerView) findViewById(R.id.history_recycler_view);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
-        mAdapter = new HistoryAdapter(new ArrayList<String>());
+        mAdapter = new HistoryAdapter(getApplicationContext(), new ArrayList<WiFiProperties>());
         mAdapter.setHasStableIds(true);
         mRecyclerView.setAdapter(mAdapter);
         // For ListView Adapter
@@ -67,7 +70,7 @@ public class ScanActivity extends AppCompatActivity {
         mainWifi.startScan();
         serverText.setText("Starting Scan...");
 
-        Button conn = (Button) findViewById(R.id.connectB);
+        Button conn = (Button) findViewById(R.id.prop);
         conn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -78,7 +81,7 @@ public class ScanActivity extends AppCompatActivity {
             }
         });
 
-        Button disconn = (Button) findViewById(R.id.disconnectB);
+        Button disconn = (Button) findViewById(R.id.sniff);
         disconn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -111,7 +114,7 @@ public class ScanActivity extends AppCompatActivity {
                 sb.append(new Integer(i + 1).toString() + ". ");
                 sb.append((wifiList.get(i)).toString());
                 sb.append("\n\n");
-                addToHistory("Already subscribed to: " + wifiList.get(i).toString(), Color.BLUE);
+                addToHistory(wifiList.get(i).toString(), Color.BLUE);
             }
             serverText.setText("Scan Completed");
         }
@@ -147,11 +150,41 @@ public class ScanActivity extends AppCompatActivity {
     }
 
     private void addToHistory(String mainText, int color) {
-        System.out.println("Aseem: " + mainText);
-        mAdapter.add(mainText, color);
-        mRecyclerView.smoothScrollToPosition(mAdapter.getItemCount());
-    }
+        int pos, i, k=0, l=0, m=0, index = 0;
+        String[] elements = mainText.split(" ");
+        WiFiProperties wifiP = new WiFiProperties("null", "null");
 
+        System.out.println("Aseem Length: " + elements.length + mainText);
+        for (i=0;i<elements.length;i=i+index) {
+            System.out.println("Aseem index: " + index);
+            if (elements[i].equals("SSID:")) {
+                wifiP.mSsid = elements[i + 1];
+                System.out.println("Aseem found ssid: " + i);
+                for (k = i + 1; k < elements.length; k++) {
+                    if (elements[k].equals("BSSID:")) {
+                        System.out.println("Aseem found bssid: " + k);
+                        wifiP.mBssid = elements[k + 1];
+                        for (l = k + 1; l < elements.length; l++) {
+                            if (elements[l].equals("capabilities:")) {
+                                System.out.println("Aseem found capabilities: " + l);
+                                wifiP.mCap = elements[l + 1];
+                                for (m = l + 1; m < elements.length; m++) {
+                                    if (elements[m].equals("level:")) {
+                                        wifiP.mLevel = elements[m + 1];
+                                        System.out.println("Aseem bssid, ssid: " + wifiP.mBssid + " " + wifiP.mSsid);
+                                        mAdapter.add(wifiP, color);
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            index = k+1;
+            mRecyclerView.smoothScrollToPosition(mAdapter.getItemCount());
+        }
+    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
