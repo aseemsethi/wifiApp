@@ -78,6 +78,7 @@ public class ScanActivity extends AppCompatActivity {
                         getSystemService(Context.INPUT_METHOD_SERVICE);
                 inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),
                         InputMethodManager.HIDE_NOT_ALWAYS);
+                mainWifi.startScan();
             }
         });
 

@@ -86,14 +86,13 @@
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:layout_marginTop="10dp"
+        android:layout_weight="1"
         android:fillViewport="true"
         android:scrollbars="vertical"
         android:verticalScrollbarPosition="right"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         tools:layout_editor_absoluteX="8dp"
-        tools:layout_editor_absoluteY="8dp"
-        android:layout_weight="1">
-    </android.support.v7.widget.RecyclerView>
+        tools:layout_editor_absoluteY="8dp"></android.support.v7.widget.RecyclerView>
 
     <View
         android:layout_width="match_parent"
@@ -114,7 +113,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             android:layout_weight="1"
-            android:text="Properties"
+            android:text="Scan"
             android:textSize="12sp" />
 
         <Button

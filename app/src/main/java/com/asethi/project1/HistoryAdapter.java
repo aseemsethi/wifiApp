@@ -42,6 +42,12 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
             mCap = (TextView) v.findViewById(R.id.cap);
             mLevel = (TextView) v.findViewById(R.id.level);
             rootView=(LinearLayout)v.findViewById(R.id.rootView);
+            mTextView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(v.getContext(), "Clicked: " + getAdapterPosition(), Toast.LENGTH_LONG).show();
+                }
+            });
         }
     }
 
@@ -58,10 +64,13 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
         return new ViewHolder(v);
     }
 
-
     public void add(WiFiProperties data, int color){
         colorVar = color;
         myColors.add(color);
+        if (wifiP.contains(data)) {
+            System.out.println("Aseem: duplicate data" + data.mSsid);
+            return;
+        }
         wifiP.add(data);
         this.notifyDataSetChanged();
     }

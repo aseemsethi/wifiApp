@@ -9,11 +9,16 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
     <TextView
-        android:id="@+id/text1"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="80dp"
         android:layout_marginLeft="10dp"
-        android:text="\nThis is a WiFi App. It has multiple functions, like \n\n
-        WiFi Scanner, Sniffer etc."
-        android:textSize="14sp" />
+        android:paddingTop="10dp"
+        android:text="This is a WiFi App. It has multiple tools in the Drawer Menu"
+        android:textSize="16sp" />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:text="a) WiFi Scanner\nb) WiFi Sniffer\nc) Deactivate AccessPoint"
+    android:textSize="14sp" />
 </LinearLayout>

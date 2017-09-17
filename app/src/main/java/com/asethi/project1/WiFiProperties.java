@@ -28,4 +28,17 @@ public class WiFiProperties {
     public String getLEVEL() {
         return mLevel;
     }
+    @Override
+    public boolean  equals (Object object) {
+        boolean result = false;
+        if (object == null || object.getClass() != getClass()) {
+            result = false;
+        } else {
+            WiFiProperties x = (WiFiProperties) object;
+            if (this.mSsid.equals(x.getSSID())) {
+                result = true;
+            }
+        }
+        return result;
+    }
 }
