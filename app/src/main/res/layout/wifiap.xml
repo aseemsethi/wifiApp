@@ -112,24 +112,6 @@
             android:layout_weight="1"
             android:background="@drawable/my_border"
             android:inputType="textPersonName"
-            android:text="User:" />
-
-        <EditText
-            android:id="@+id/user"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:layout_weight="3"
-            android:inputType="textPersonName"
-            android:textSize="12sp" />
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_weight="1"
-            android:background="@drawable/my_border"
-            android:inputType="textPersonName"
             android:text="Pwd:" />
 
         <EditText
@@ -138,7 +120,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
             android:layout_weight="3"
-            android:inputType="textPersonName"
+            android:inputType="textPassword"
             android:textSize="12sp" />
     </LinearLayout>
     <View
