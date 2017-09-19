@@ -17,8 +17,6 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -49,6 +47,7 @@ public class ScanActivity extends AppCompatActivity {
         //Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         //setSupportActionBar(toolbar);
         serverText = (TextView) findViewById(R.id.serverUI);
+        System.out.println("Aseem: ScanActivity onCreate");
 
         // For ListView Adapter
         mRecyclerView = (RecyclerView) findViewById(R.id.history_recycler_view);
@@ -70,7 +69,7 @@ public class ScanActivity extends AppCompatActivity {
         mainWifi.startScan();
         serverText.setText("Starting Scan...");
 
-        Button conn = (Button) findViewById(R.id.prop);
+        Button conn = (Button) findViewById(R.id.scan);
         conn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -78,20 +77,8 @@ public class ScanActivity extends AppCompatActivity {
                         getSystemService(Context.INPUT_METHOD_SERVICE);
                 inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),
                         InputMethodManager.HIDE_NOT_ALWAYS);
+                serverText.setText("Starting Scan...");
                 mainWifi.startScan();
-            }
-        });
-
-        Button disconn = (Button) findViewById(R.id.sniff);
-        disconn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                InputMethodManager inputManager = (InputMethodManager)
-                        getSystemService(Context.INPUT_METHOD_SERVICE);
-                inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),
-                        InputMethodManager.HIDE_NOT_ALWAYS);
-                if (serverUri != null) {
-                }
             }
         });
     }
@@ -130,6 +117,7 @@ public class ScanActivity extends AppCompatActivity {
             super.onBackPressed();
         }
         */
+        System.out.println("Aseem: ScanActivity onBackPressed");
         super.onBackPressed();
     }
 
@@ -142,11 +130,16 @@ public class ScanActivity extends AppCompatActivity {
 
     protected void onPause() {
         unregisterReceiver(receiverWifi);
+        System.out.println("Aseem: ScanActivity onPause");
         super.onPause();
     }
 
     protected void onResume() {
+        System.out.println("Aseem: ScanActivity onResume");
         registerReceiver(receiverWifi, new IntentFilter(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION));
+        serverText.setText("Starting Scan...");
+        mAdapter.clear();
+        mainWifi.startScan();
         super.onResume();
     }
 
@@ -160,11 +153,13 @@ public class ScanActivity extends AppCompatActivity {
             System.out.println("Aseem index: " + index);
             if (elements[i].equals("SSID:")) {
                 wifiP.mSsid = elements[i + 1];
+                wifiP.mSsid = wifiP.mSsid.substring(0, wifiP.mSsid.length() - 1);
                 System.out.println("Aseem found ssid: " + i);
                 for (k = i + 1; k < elements.length; k++) {
                     if (elements[k].equals("BSSID:")) {
                         System.out.println("Aseem found bssid: " + k);
                         wifiP.mBssid = elements[k + 1];
+                        wifiP.mBssid = wifiP.mBssid.substring(0, wifiP.mBssid.length() - 1);
                         for (l = k + 1; l < elements.length; l++) {
                             if (elements[l].equals("capabilities:")) {
                                 System.out.println("Aseem found capabilities: " + l);

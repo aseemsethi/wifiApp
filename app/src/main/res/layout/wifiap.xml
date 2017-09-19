@@ -11,73 +11,143 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
         android:orientation="horizontal">
 
         <TextView
-            android:id="@+id/text1"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             android:layout_weight="1"
             android:background="@drawable/my_border"
             android:inputType="textPersonName"
-            android:text="Status:" />
+            android:text="SSID:" />
 
         <TextView
-            android:id="@+id/serverUI"
+            android:id="@+id/ssid1"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="4"
+            android:layout_marginLeft="5dp"
+            android:layout_weight="3"
             android:inputType="textPersonName"
-            android:text="Status Line..."
             android:textSize="12sp" />
-    </LinearLayout>
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@android:color/holo_blue_light"/>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             android:layout_weight="1"
+            android:background="@drawable/my_border"
             android:inputType="textPersonName"
-            android:text="SSID" />
+            android:text="BSSID:" />
+
+        <TextView
+            android:id="@+id/bssid1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_weight="3"
+            android:inputType="textPersonName"
+            android:textSize="12sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal">
 
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
             android:layout_weight="1"
+            android:background="@drawable/my_border"
             android:inputType="textPersonName"
-            android:text="BSSID"
+            android:text="Cap:" />
+
+        <TextView
+            android:id="@+id/cap1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_weight="3"
+            android:inputType="textPersonName"
             android:textSize="12sp" />
+
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
             android:layout_weight="1"
+            android:background="@drawable/my_border"
             android:inputType="textPersonName"
-            android:text="Cap"
-            android:textSize="12sp" />
+            android:text="Level:" />
+
         <TextView
+            android:id="@+id/level1"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_marginLeft="5dp"
+            android:layout_weight="3"
             android:inputType="textPersonName"
-            android:text="Level"
             android:textSize="12sp" />
     </LinearLayout>
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="3dp"
-        android:background="@android:color/holo_blue_light"/>
+        android:layout_height="1dp"
+        android:layout_marginTop="10dp"
+        android:background="@android:color/holo_blue_light" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:orientation="horizontal">
 
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_weight="1"
+            android:background="@drawable/my_border"
+            android:inputType="textPersonName"
+            android:text="User:" />
+
+        <EditText
+            android:id="@+id/user"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_weight="3"
+            android:inputType="textPersonName"
+            android:textSize="12sp" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_weight="1"
+            android:background="@drawable/my_border"
+            android:inputType="textPersonName"
+            android:text="Pwd:" />
+
+        <EditText
+            android:id="@+id/pwd"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_weight="3"
+            android:inputType="textPersonName"
+            android:textSize="12sp" />
+    </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_marginTop="10dp"
+        android:background="@android:color/holo_blue_light" />
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/history_recycler_view"
+        android:id="@+id/wifiap_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
@@ -108,12 +178,18 @@
         android:orientation="horizontal">
 
         <Button
-            android:id="@+id/scan"
+            android:id="@+id/connect"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
             android:layout_weight="1"
-            android:text="Scan"
+            android:text="Connect"
+            android:textSize="12sp" />
+        <Button
+            android:id="@+id/sniff"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Sniffer"
             android:textSize="12sp" />
     </LinearLayout>
 </LinearLayout>

@@ -5,6 +5,7 @@ package com.asethi.project1;
  */
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -22,7 +23,7 @@ import java.util.ArrayList;
 public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHolder>{
 
     private ArrayList<String> history;
-    private ArrayList<WiFiProperties> wifiP = new ArrayList<>();
+    static private ArrayList<WiFiProperties> wifiP = new ArrayList<>();
     private Context mContext;
 
     //Store Colors here indexed by position
@@ -45,7 +46,20 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
             mTextView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(v.getContext(), "Clicked: " + getAdapterPosition(), Toast.LENGTH_LONG).show();
+                    if (wifiP.size() == 0) {
+                        System.out.println("Aseem: WiFiP size is 0");
+                        Toast.makeText(v.getContext(), "Scan in progress... "
+                                , Toast.LENGTH_LONG).show();
+                        return;
+                    }
+                    Toast.makeText(v.getContext(), "Clicked: " +wifiP.get(getAdapterPosition()).mSsid
+                            , Toast.LENGTH_LONG).show();
+                    Intent intent = new Intent(v.getContext(), WiFiAP.class);
+                    intent.putExtra("ssid", wifiP.get(getAdapterPosition()).mSsid);
+                    intent.putExtra("bssid", wifiP.get(getAdapterPosition()).mBssid);
+                    intent.putExtra("cap", wifiP.get(getAdapterPosition()).mCap);
+                    intent.putExtra("level", wifiP.get(getAdapterPosition()).mLevel);
+                    v.getContext().startActivity(intent);
                 }
             });
         }
@@ -62,6 +76,16 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
         View v = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.history_row, parent, false);
         return new ViewHolder(v);
+    }
+
+    // size shows as 0, when called from Resume, since the wifiP has already been cleared at that point
+    // It is best to check for wifip.size in onClick and not proceed if the size is 0.
+    // That gives time for the background scan to complete.
+    public void clear() {
+        int size = wifiP.size();
+        System.out.println("Aseem: recyclerView cleared size" + size);
+        wifiP.clear();
+        notifyItemRangeRemoved(0, size);
     }
 
     public void add(WiFiProperties data, int color){
