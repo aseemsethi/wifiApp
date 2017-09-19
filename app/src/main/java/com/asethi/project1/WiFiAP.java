@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.Color;
 import android.net.NetworkInfo;
 import android.net.wifi.WifiConfiguration;
 import android.net.wifi.WifiManager;
@@ -21,7 +22,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 public class WiFiAP extends AppCompatActivity {
-    private HistoryAdapter mAdapter;
+    private ScanAdapter mAdapter;
     RecyclerView mRecyclerView;
     WiFiProperties wifiP;
     String ssid, bssid, level, cap;
@@ -54,7 +55,7 @@ public class WiFiAP extends AppCompatActivity {
         mRecyclerView = (RecyclerView) findViewById(R.id.wifiap_recycler_view);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
-        mAdapter = new HistoryAdapter(getApplicationContext(), new ArrayList<WiFiProperties>());
+        mAdapter = new ScanAdapter(new ArrayList<String>());
         mAdapter.setHasStableIds(true);
         mRecyclerView.setAdapter(mAdapter);
         // For ListView Adapter
@@ -67,6 +68,18 @@ public class WiFiAP extends AppCompatActivity {
                         getSystemService(Context.INPUT_METHOD_SERVICE);
                 inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),
                         InputMethodManager.HIDE_NOT_ALWAYS);
+            }
+        });
+        Button wsniff = (Button) findViewById(R.id.wsniff);
+        wsniff.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                InputMethodManager inputManager = (InputMethodManager)
+                        getSystemService(Context.INPUT_METHOD_SERVICE);
+                inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),
+                        InputMethodManager.HIDE_NOT_ALWAYS);
+                mAdapter.add("Need to attach external WiFi device", Color.BLUE);
+
             }
         });
         final Button conn = (Button) findViewById(R.id.connect);
@@ -113,10 +126,15 @@ public class WiFiAP extends AppCompatActivity {
                     // wifi connected
                     System.out.println("Aseem: WiFiAP Connected");
                     cd.setText("Disconnect");
+                    cd.setBackgroundColor(Color.GREEN);
+                    //cd.setBackgroundResource(R.drawable.my_border_green);
+
                 } else {
                     // wifi connection was lost
                     System.out.println("Aseem: WiFiAP Disconnected");
                     cd.setText("Connect");
+                    cd.setBackgroundColor(Color.GRAY);
+                    //cd.setBackgroundResource(R.drawable.my_border);
                 }
             }
         }

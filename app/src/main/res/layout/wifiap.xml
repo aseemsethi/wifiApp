@@ -127,7 +127,7 @@
         android:layout_width="match_parent"
         android:layout_height="2dp"
         android:layout_marginTop="10dp"
-        android:background="@android:color/holo_blue_light" />
+        android:background="@android:color/holo_green_light" />
     <android.support.v7.widget.RecyclerView
         android:id="@+id/wifiap_recycler_view"
         android:layout_width="match_parent"
@@ -165,6 +165,13 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Connect"
+            android:textSize="12sp" />
+        <Button
+            android:id="@+id/wsniff"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Wireless Sniffer"
             android:textSize="12sp" />
         <Button
             android:id="@+id/sniff"
