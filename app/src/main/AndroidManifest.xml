@@ -25,6 +25,12 @@
         </activity>
         <activity android:name=".ScanActivity" />
         <activity android:name=".WiFiAP" />
+        <service android:name=".SniffActivity"
+            android:permission="android.permission.BIND_VPN_SERVICE">
+            <intent-filter>
+                <action android:name="android.net.VpnService"/>
+            </intent-filter>
+        </service>
     </application>
 
 </manifest>

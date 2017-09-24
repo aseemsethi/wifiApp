@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Color;
 import android.net.NetworkInfo;
+import android.net.VpnService;
 import android.net.wifi.WifiConfiguration;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
@@ -68,8 +69,17 @@ public class WiFiAP extends AppCompatActivity {
                         getSystemService(Context.INPUT_METHOD_SERVICE);
                 inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),
                         InputMethodManager.HIDE_NOT_ALWAYS);
+                Intent intent = VpnService.prepare(getApplicationContext());
+                if (intent != null) {
+                    System.out.println("Aseem: Starting VPNService");
+                    startActivityForResult(intent, 0);
+                } else {
+                    System.out.println("Aseem: VPNService intent is null");
+                    onActivityResult(0, RESULT_OK, null);
+                }
             }
         });
+
         Button wsniff = (Button) findViewById(R.id.wsniff);
         wsniff.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -113,6 +123,16 @@ public class WiFiAP extends AppCompatActivity {
                 wifiManager.reconnect();
             }
         });
+    }
+    // This function is called when the 1nd activity returns, i.e.
+    // When VPNService returns, we start SniffActivity
+    @Override
+    protected void onActivityResult(int request, int result, Intent data) {
+        if (result == RESULT_OK) {
+            String prefix = getPackageName();
+            Intent intent = new Intent(this, SniffActivity.class);
+            startService(intent);
+        }
     }
     public class WifiReceiver extends BroadcastReceiver {
         @Override
